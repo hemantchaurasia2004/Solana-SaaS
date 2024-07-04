@@ -14,10 +14,12 @@ const JWT_SECRET = "mysecret"
 const router = Router();
 const prismaClient = new PrismaClient();
 
-router.get("/presignedUrl", (req, res) => {
+router.get("/presignedUrl", authMiddelware, (req, res) => {
+
+    const userId = req.userId;
     const command = new PutObjectCommand({
         Bucket: "solana-saas",
-        Key: "saas/"
+        Key: `saas/${}`
       })
       
       const preSignedUrl = getSignedUrl(s3Client, command, { expiresIn: 3600 })
